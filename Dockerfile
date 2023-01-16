@@ -6,11 +6,11 @@ FROM python:latest
 WORKDIR /usr/app/src
 
 #to COPY the remote file at working directory in container
-COPY techlib_checker.py ./
+#COPY techlib_checker.py ./
 # Now the structure looks like this '/usr/app/src/test.py'
 RUN pip install requests beautifulsoup4
 
 #CMD instruction should be used to run the software
 #contained by your image, along with any arguments.
 
-CMD [ "python", "./techlib_checker.py"]
+CMD [ "python", "/app/techlib_checker.py"]
