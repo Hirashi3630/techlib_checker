@@ -13,4 +13,4 @@ RUN pip install requests beautifulsoup4
 #CMD instruction should be used to run the software
 #contained by your image, along with any arguments.
 
-CMD [ "python", "/app/techlib_checker.py"]
+CMD [ "python", "techlib_checker.py"]
