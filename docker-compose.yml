@@ -3,4 +3,4 @@ services:
   techlib_checker:
     build: .
     volumes:
-      - ./:/app
+      - .:/app
