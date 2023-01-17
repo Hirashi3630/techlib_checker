@@ -60,32 +60,32 @@ if __name__ == '__main__':
                         level=logging.DEBUG)
 
 
+    while True:
+        try:
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, 'html.parser')
 
-    try:
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
+            # Find the element containing the number of persons in the library
+            population = int(soup.select('.text-center span')[0].text)
 
-        # Find the element containing the number of persons in the library
-        population = int(soup.select('.text-center span')[0].text)
+            # Write the number of persons to a CSV file
+            with open(f"{csv_path}techlib_data_{file_date}.csv", 'a', newline='') as csvfile:
+                fieldnames = ['date', 'persons']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        # Write the number of persons to a CSV file
-        with open(f"{csv_path}techlib_data_{file_date}.csv", 'a', newline='') as csvfile:
-            fieldnames = ['date', 'persons']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writerow({'date': datetime.datetime.now().isoformat(), 'persons': population})
+            report_successful_count += 1 # if successful add it to the counter
+        except Exception as e:
+            logging.error(f"Check failed! ({str(e)})")
+        finally:
+            report_elapsed += data_save_interval
 
-            writer.writerow({'date': datetime.datetime.now().isoformat(), 'persons': population})
-        report_successful_count += 1 # if successful add it to the counter
-    except Exception as e:
-        logging.error(f"Check failed! ({str(e)})")
-    finally:
-        report_elapsed += data_save_interval
+            # report
+            if report_elapsed >= report_interval:
+                logging.info(f"{report_successful_count} out of {int(report_interval/data_save_interval)} checks have been successfull!")
+                report_elapsed = 0
+                report_successful_count = 0
 
-        # report
-        if report_elapsed >= report_interval:
-            logging.info(f"{report_successful_count} out of {int(report_interval/data_save_interval)} checks have been successfull!")
-            report_elapsed = 0
-            report_successful_count = 0
-
-        # sleep
-        logging.debug(f"Sleeping for {data_save_interval/1000}s")
-        time.sleep(data_save_interval)
+            # sleep
+            logging.debug(f"Sleeping for {data_save_interval/1000}s")
+            time.sleep(data_save_interval)
