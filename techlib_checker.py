@@ -16,12 +16,12 @@ def handle_config():
         cfg['Main'] = {
             'url': 'https://www.techlib.cz/',
             'csv_path': 'data/',
-            'data_save_interval': 300000,
+            'data_save_interval': 300,
         }
 
         cfg['Logging'] = {
             'path': "data/log/",
-            'report_interval': 3600000,
+            'report_interval': 3600,
         }
         cfg.write(open('config.ini', 'w'))
         print('config.ini file created! Exiting application...')
@@ -59,7 +59,6 @@ if __name__ == '__main__':
                         datefmt='%H:%M:%S',
                         level=logging.DEBUG)
 
-
     while True:
         try:
             response = requests.get(url)
@@ -87,5 +86,7 @@ if __name__ == '__main__':
                 report_successful_count = 0
 
             # sleep
-            logging.debug(f"Sleeping for {data_save_interval/1000}s")
+            logging.debug(f"Sleeping for {data_save_interval}s")
             time.sleep(data_save_interval)
+        print("while")
+        print(file_date)
