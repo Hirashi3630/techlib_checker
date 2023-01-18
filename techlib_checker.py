@@ -61,6 +61,7 @@ if __name__ == '__main__':
 
     while True:
         try:
+            file_date = datetime.datetime.now().strftime("%Y-%m-%d")
             response = requests.get(url)
             soup = BeautifulSoup(response.text, 'html.parser')
 
